@@ -2,9 +2,9 @@ import os
 import csv
 
 # Paths to dataset folders
-images_dir = "data/images"          # Folder containing image files
-labels_dir = "data/labels"          # Folder containing label files
-csv_path = "data/CSVs/dataset.csv"  # Output CSV file path
+images_dir = "images"          # Folder containing image files
+labels_dir = "labels"          # Folder containing label files
+csv_path = "CSVs/dataset.csv"  # Output CSV file path
 
 # Get all filenames in the images directory
 image_files = sorted(os.listdir(images_dir))
