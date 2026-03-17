@@ -1,7 +1,7 @@
 path: data
 
-train: images
-val: images
+train: images/train
+val: images/val
 
 names:
   0: mug
