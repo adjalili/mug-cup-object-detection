@@ -1,53 +1,97 @@
-# Mug / Cup Object Detection
+# Mug Classification Pipeline
 
 ## Project Description
-This project aims to detect **mugs and cups** using image-based object detection.  
-All images are taken by group members in **indoor environments** such as classrooms and homes.
 
-## Target Object
-- Mug
-- Cup
+This project implements a **modular machine learning pipeline** for classifying images into two categories:
 
-## Image Collection
-- Images are taken using mobile phones
-- Indoor locations (tables, desks, study areas)
-- Different angles and lighting conditions
+* **Mug**
+* **No Mug**
+
+The pipeline follows a structured approach including data preparation, dataset organization, training, validation, and evaluation.
 
 ---
 
-## Directory Description
+## Project Structure
 
-- **images/**  
-  Contains all images used in the project.
-
-- **images/train/**  
-  Training images used to train the object detection model.
-
-- **images/val/**  
-  Validation images used to evaluate the model.
-
-- **labels/**  
-  Contains annotation files for the images.
-
-- **labels/train/**  
-  Label files corresponding to training images.
-
-- **labels/val/**  
-  Label files corresponding to validation images.
-
-- **sample_image/**  
-  Contains one original sample image used for project approval.
-
-- **README.md**  
-  Project description and directory structure explanation.
+```
+mug-cup-object-detection
+│
+├── classification_pipeline
+│   ├── args.py          # Configuration (paths, epochs, batch size)
+│   ├── dataset.py       # Dataset loading and preprocessing
+│   ├── model.py         # CNN model definition
+│   ├── trainer.py       # Training and validation loop
+│   ├── utils.py         # Helper functions
+│   ├── main.py          # Main pipeline execution
+│   └── evaluate.py      # Model evaluation (accuracy, confusion matrix)
+│
+├── data
+│   ├── images/          # Original images (for detection dataset)
+│   ├── labels/          # Annotation files (YOLO format)
+│   └── CSVs/            # CSV files (dataset structure)
+│
+├── README.md
+└── requirements.txt
+```
 
 ---
 
-## Notes
-- All images are original and collected by group members.
-- Data collection starts only after project approval.
+## Dataset
+
+The dataset is organized in a structured format:
+
+* **images/** → contains all image files
+* **labels/** → contains corresponding annotation files
+* **CSVs/** → contains dataset CSV files
+
+### CSV Format
+
+Each row in `dataset.csv` contains:
+
+```
+images,labels
+data/images/img_0.jpg,data/labels/img_0.txt
+```
+
+---
+
+## Pipeline Overview
+
+1. **Data Collection**
+   Images collected in indoor environments.
+
+2. **Annotation**
+   Bounding boxes created in YOLO format.
+
+3. **Dataset Structuring**
+   Organized into images, labels, and CSV files.
+
+4. **Data Splitting**
+   Training and validation sets created.
+
+5. **Training**
+   CNN model trained using PyTorch.
+
+6. **Validation**
+   Model evaluated on validation dataset.
+
+7. **Evaluation**
+   Performance measured using accuracy and confusion matrix.
+
+---
+
+## Requirements
+
+Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+---
 
 ## Group Members
-- Ahmadshah Djalili  
-- Emir Gorduk  
-- Nadeera Hettithanthreege Don
+
+* Ahmadshah Djalili
+* Emir Gorduk
+* Nadeera Hettithanthreege Don
