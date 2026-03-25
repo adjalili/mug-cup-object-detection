@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 import torch
-from torch.xpu import device
+
 
 from dataset import ObjDetectionDataset
 from torch.utils.data import DataLoader
