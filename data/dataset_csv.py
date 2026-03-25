@@ -2,8 +2,8 @@ import os
 import csv
 
 # Paths to dataset folders
-images_dir = "images"          # Folder containing image files
-labels_dir = "labels"          # Folder containing label files
+images_dir = "data/images"
+labels_dir = "data/labels"          # Folder containing label files
 csv_path = "CSVs/dataset.csv"  # Output CSV file path
 
 # Get all filenames in the images directory
