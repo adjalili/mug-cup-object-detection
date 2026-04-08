@@ -1,13 +1,13 @@
+import matplotlib.pyplot as plt
 
-def resize_box_xyxy(box, old_w, old_h, new_w, new_h):
-    x1, y1, x2, y2 = box
 
-    scale_x = new_w / old_w
-    scale_y = new_h / old_h
+def show_batch(images, labels, classes):
 
-    x1 *= scale_x
-    y1 *= scale_y
-    x2 *= scale_x
-    y2 *= scale_y
+    for i in range(len(images)):
+        image = images[i].detach().cpu().permute(1, 2, 0).numpy()
+        label = labels[i].item()
 
-    return x1, y1, x2, y2
+        plt.imshow(image)
+        plt.title(f"Label: {classes[label]}")
+        plt.axis("off")
+        plt.show()
