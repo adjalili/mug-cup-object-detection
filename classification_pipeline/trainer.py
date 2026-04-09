@@ -4,19 +4,25 @@ import torch.optim as optim
 import matplotlib.pyplot as plt
 
 
-def train_model(model, train_loader, val_loader, device, epochs=15, lr=0.001):
+def train_model(model, train_loader, val_loader, device, epochs=15, lr=0.0003):
 
     model.to(device)
 
-    # loss + optimizer
+    # ===== LOSS =====
     class_weights = torch.tensor([1.0, 3.0]).to(device)
     criterion = nn.CrossEntropyLoss(weight=class_weights)
-    optimizer = optim.Adam(model.parameters(), lr=lr)
+
+    # ===== OPTIMIZER =====
+    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)
+
+    # ✅ LEARNING RATE SCHEDULER (VERY IMPORTANT)
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5)
 
     best_accuracy = 0.0
 
     train_losses = []
     val_losses = []
+    val_accuracies = []
 
     print("\n🚀 Starting Training...\n")
 
@@ -66,6 +72,7 @@ def train_model(model, train_loader, val_loader, device, epochs=15, lr=0.001):
         val_losses.append(avg_val_loss)
 
         accuracy = 100 * correct / total
+        val_accuracies.append(accuracy)
 
         print(
             f"Epoch [{epoch+1}/{epochs}] "
@@ -74,23 +81,38 @@ def train_model(model, train_loader, val_loader, device, epochs=15, lr=0.001):
             f"Val Acc: {accuracy:.2f}%"
         )
 
-        # save best model
+        # ===== SAVE BEST MODEL =====
         if accuracy > best_accuracy:
             best_accuracy = accuracy
             torch.save(model.state_dict(), "best_model.pth")
             print("🔥 Best model saved!")
 
+        # ✅ STEP SCHEDULER
+        scheduler.step()
+
     print("\nTraining Finished.")
     print(f"Best Accuracy: {best_accuracy:.2f}%")
 
     # ===== PLOT =====
+    plt.figure()
+
     plt.plot(train_losses, label="Train Loss")
     plt.plot(val_losses, label="Validation Loss")
 
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
-    plt.title("Learning Curve")
+    plt.title("Learning Curve (Ultra Model)")
     plt.legend()
 
     plt.savefig("learning_curve.png")
+    plt.show()
+
+    # ===== OPTIONAL: ACCURACY PLOT =====
+    plt.figure()
+    plt.plot(val_accuracies, label="Validation Accuracy")
+    plt.xlabel("Epoch")
+    plt.ylabel("Accuracy (%)")
+    plt.title("Validation Accuracy")
+    plt.legend()
+    plt.savefig("accuracy_curve.png")
     plt.show()

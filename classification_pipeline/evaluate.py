@@ -1,10 +1,12 @@
 import torch
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score
+import matplotlib.pyplot as plt
 
 
 def evaluate(model, val_loader):
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     model.to(device)
     model.eval()
 
@@ -29,7 +31,23 @@ def evaluate(model, val_loader):
     print(cm)
 
     # ===== ACCURACY =====
-    correct = sum([1 for p, l in zip(all_preds, all_labels) if p == l])
-    accuracy = correct / len(all_labels) * 100
-
+    accuracy = accuracy_score(all_labels, all_preds) * 100
     print(f"\nAccuracy: {accuracy:.2f}%")
+
+    # ===== PLOT CONFUSION MATRIX =====
+    plt.figure()
+    plt.imshow(cm)
+    plt.title("Confusion Matrix")
+    plt.colorbar()
+
+    plt.xlabel("Predicted")
+    plt.ylabel("Actual")
+
+    # Show numbers inside cells
+    for i in range(len(cm)):
+        for j in range(len(cm)):
+            plt.text(j, i, cm[i, j], ha='center', va='center')
+
+    plt.tight_layout()
+    plt.savefig("confusion_matrix.png")
+    plt.show()
