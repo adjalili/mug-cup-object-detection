@@ -14,7 +14,13 @@ def train_model(model, train_loader, val_loader, device):
 
     best_val_loss = float("inf")
 
-    for epoch in range(args.epochs):
+
+
+    #to store the losses for plotting later
+    train_losses = []
+    val_losses = []
+
+    for epoch in range(args.num_epochs):
 
         model.train()
         running_loss = 0.0
@@ -45,8 +51,13 @@ def train_model(model, train_loader, val_loader, device):
 
         val_loss = validate_model(model, val_loader, device)
 
+
+        # store the losses for plotting later
+        train_losses.append(train_epoch_loss)
+        val_losses.append(val_loss)
+
         print(
-            f"Epoch {epoch + 1}/{args.epochs} | "
+            f"Epoch {epoch + 1}/{args.num_epochs} | "
             f"Train Loss: {train_epoch_loss:.4f} | "
             f"Val Loss: {val_loss:.4f}"
         )
@@ -55,11 +66,13 @@ def train_model(model, train_loader, val_loader, device):
             best_val_loss = val_loss
             os.makedirs(args.output_dir, exist_ok=True)
             torch.save(model.state_dict(),os.path.join(args.output_dir, "best_model.pth"))
+    
+    # return the losses for plotting later
+    return train_losses, val_losses
 
-       
 
 def validate_model(model, val_loader, device):
-    model.eval()
+    model.train()
     val_loss_sum = 0.0
     val_count = 0
 
