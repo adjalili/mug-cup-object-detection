@@ -19,12 +19,12 @@ def get_dataloaders(batch_size):
 
     # ===== DATASETS =====
     train_dataset = datasets.ImageFolder(
-        root="../data/classification/images/train",   # ✅ FIXED PATH
+        root="data/classification/images/train",   # ✅ CORRECT PATH
         transform=train_transform
     )
 
     val_dataset = datasets.ImageFolder(
-        root="../data/classification/images/val",     # ✅ FIXED PATH
+        root="data/classification/images/val",     # ✅ CORRECT PATH
         transform=val_transform
     )
 
